@@ -16,6 +16,7 @@
 \usepackage{enumitem}
 \usepackage{lastpage}
 \usepackage{graphicx}
+\usepackage[hidelinks]{hyperref} % define \url y los enlaces del índice/citas; sin bordes de color
 
 \definecolor{iocgray}{gray}{0.85}     % gris caja de título / barras de sección
 \definecolor{iocbarragris}{gray}{0.80}
@@ -26,7 +27,7 @@
 % ------------------------------------------------------------
 \newif\ifiocfooter  \iocfootertrue   % \iocfooterfalse  -> sin pie de página
 \newif\ifiocindex   \iocindexfalse   % \iocindextrue    -> añade índice tras la portada
-\newif\ifiocbib     \iocbibfalse     % \iocbibtrue      -> añade bibliografía al final
+\newif\ifiocbib     \iocbibtrue     % \iocbibtrue      -> añade bibliografía al final
 
 % ------------------------------------------------------------
 %  DATOS DEL DOCUMENTO  (cambia esto en cada nuevo EAC)
