@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+%  PLANTILLA ESTILO "IOC / EAC"
+%  Edita el bloque "DATOS DEL DOCUMENTO" y los interruptores de
+%  abajo, y luego el contenido a partir de \begin{document}.
+% ============================================================
+
+\usepackage[a4paper,left=2cm,right=2cm,top=2.2cm,bottom=3.5cm,headheight=28pt,footskip=30pt]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{lastpage}
+\usepackage{graphicx}
+
+\definecolor{iocgray}{gray}{0.85}     % gris caja de título / barras de sección
+\definecolor{iocbarragris}{gray}{0.80}
+\definecolor{iocblau}{RGB}{0,102,204} % azul para "Nom i cognoms"
+
+% ------------------------------------------------------------
+%  INTERRUPTORES (activa/desactiva partes opcionales)
+% ------------------------------------------------------------
+\newif\ifiocfooter  \iocfootertrue   % \iocfooterfalse  -> sin pie de página
+\newif\ifiocindex   \iocindexfalse   % \iocindextrue    -> añade índice tras la portada
+\newif\ifiocbib     \iocbibfalse     % \iocbibtrue      -> añade bibliografía al final
+
+% ------------------------------------------------------------
+%  DATOS DEL DOCUMENTO  (cambia esto en cada nuevo EAC)
+% ------------------------------------------------------------
+\newcommand{\nomAlumne}{Nom i cognoms}
+\newcommand{\ciclePrograma}{CEFP Ciberseguretat en Entorns de les Tecnologies de la Informació}
+\newcommand{\modulNom}{Mòdul 5021 -- Incidents de ciberseguretat}
+\newcommand{\codiActivitat}{EAC1}
+\newcommand{\cursSemestre}{Curs 2026--27 / 1r semestre}
+\newcommand{\subtitolActivitat}{Proposta d'awareness training}
+
+\newcommand{\codiDocument}{I71}
+\newcommand{\nomExercici}{Exercici d'avaluació contínua 1}
+\newcommand{\versioDocument}{03}
+\newcommand{\fitxerDocument}{CECIB\_5021\_EAC1\_Enunciat\_2627S1 -- Jordi Foixench}
+\newcommand{\dataLliurament}{01/10/2026}
+
+% ------------------------------------------------------------
+%  PIE DE PÁGINA (tabla de metadatos; se define una vez y se
+%  reutiliza, controlada por el interruptor \ifiocfooter)
+% ------------------------------------------------------------
+\newcommand{\peuEAC}{%
+  \ifiocfooter
+  \renewcommand{\arraystretch}{1.15}
+  \noindent
+  \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{1.6cm}|>{\centering\arraybackslash}p{1.4cm}|X|>{\centering\arraybackslash}p{2.6cm}|}
+    \hline
+    \multirow{2}{*}{\parbox[c]{1.5cm}{\centering \scriptsize\textbf{ioc}\\[-2pt]\tiny institut obert de catalunya}}
+      & \scriptsize Codi: \codiDocument
+      & \scriptsize \nomExercici
+      & \scriptsize Pàgina \thepage\ de \pageref{LastPage} \\
+    \cline{2-4}
+      & \scriptsize Versió: \versioDocument
+      & \scriptsize \fitxerDocument
+      & \scriptsize Lliurament: \dataLliurament \\
+    \hline
+  \end{tabularx}
+  \fi
+}
+
+% ------------------------------------------------------------
+%  ESTILOS DE PÁGINA
+%  - "eacportada": solo la portada (sin cabecera repetida, ya
+%    que \portadaEAC dibuja su propia cabecera institucional).
+%  - "eacpagina": el resto de páginas (cabecera con título +
+%    nombre del alumno).
+%  El pie de página es el mismo \peuEAC en ambos casos.
+% ------------------------------------------------------------
+\fancypagestyle{eacportada}{%
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyfoot[C]{\peuEAC}
+}
+
+\fancypagestyle{eacpagina}{%
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  \fancyhead[L]{\small \codiActivitat\ -- \subtitolActivitat}
+  \fancyhead[R]{\small \textcolor{iocblau}{\nomAlumne}}
+  \fancyfoot[C]{\peuEAC}
+}
+
+\pagestyle{eacpagina}
+
+% ------------------------------------------------------------
+%  COMANDOS DE ESTILO
+% ------------------------------------------------------------
+
+% Cabecera institucional + caja de título gris (solo en la portada)
+\newcommand{\portadaEAC}{%
+  \thispagestyle{eacportada}%
+  \begin{minipage}[t]{0.7\textwidth}
+    \small
+    Generalitat de Catalunya\\
+    Departament d'Educació\\
+    \textbf{Institut Obert de Catalunya}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.28\textwidth}
+    \raggedleft \textcolor{iocblau}{\nomAlumne}
+  \end{minipage}
+
+  \vspace{1.2cm}
+
+  \noindent
+  \colorbox{iocgray}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}
+      \centering
+      \vspace{0.4cm}
+      \textbf{\ciclePrograma}\\[2pt]
+      \textbf{\modulNom}\\[10pt]
+      {\Huge \textbf{\codiActivitat}}\\[8pt]
+      (\cursSemestre)
+      \vspace{0.4cm}
+    \end{minipage}%
+  }
+  \vspace{0.8cm}
+}
+
+% Barra gris de título de sección (p.ej. "Enunciat", "1. Introducció")
+% También registra la entrada en el índice, si está activado.
+\newcommand{\seccioEAC}[1]{%
+  \vspace{0.4cm}
+  \noindent\colorbox{iocbarragris}{%
+    \begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}
+      \textbf{#1}
+    \end{minipage}%
+  }
+  \ifiocindex\addcontentsline{toc}{section}{#1}\fi
+  \vspace{0.3cm}
+}
+
+% ============================================================
+%  DOCUMENTO
+% ============================================================
+\begin{document}
+
+\portadaEAC
+
+% Índice opcional: activa \iocindextrue arriba para incluirlo.
+\ifiocindex
+  \renewcommand{\contentsname}{Índex}
+  \tableofcontents
+  \newpage
+\fi
+
+\seccioEAC{Enunciat}
+
+\subsection*{\codiActivitat: \subtitolActivitat}
+
+\textit{L'ús de la intel·ligència artificial en aquesta activitat pot afectar negativament
+en l'aprenentatge i l'adquisició dels resultats d'aprenentatge. Cal prestar atenció a totes
+les passes que aneu fent i mantenir l'esforç per tal que el vostre aprenentatge sigui òptim.}
+
+En aquest EAC realitzareu un treball individual per simular una campanya de
+conscienciació en ciberseguretat d'una empresa fictícia.
+
+\seccioEAC{1. Introducció}
+
+Text de la secció...
+
+\seccioEAC{2. Activitat a realitzar}
+
+Text de la secció...
+
+\seccioEAC{3. Entrega}
+
+\begin{enumerate}[label=\arabic*.]
+  \item (9 punts) Captures de pantalla i explicacions del procés seguit.
+  \item (6 punts) Explicació dels mètodes d'enganny utilitzats i proposta de mesures de
+        prevenció de l'atac (des del punt de vista de la conscienciació dels empleats).
+  \item (3 punts) Anàlisi dels resultats obtinguts.
+  \item (3 punts) Conclusions sobre l'efectivitat de la campanya.
+\end{enumerate}
+
+% Bibliografía opcional: activa \iocbibtrue arriba para incluirla.
+% Sustituye las entradas de ejemplo por las tuyas y cita con \cite{clave}.
+\ifiocbib
+  \renewcommand{\refname}{Bibliografia}
+  \ifiocindex\addcontentsline{toc}{section}{Bibliografia}\fi
+  \begin{thebibliography}{99}
+    \bibitem{gophish} Gophish. \textit{Gophish: Open Source Phishing Framework}.
+      \url{https://getgophish.com}
+
+    \bibitem{enisa} ENISA. \textit{Cybersecurity awareness campaigns: practices and guidelines}.
+      European Union Agency for Cybersecurity.
+  \end{thebibliography}
+\fi
+
+\end{document}
