@@ -17,6 +17,7 @@
 \usepackage{lastpage}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref} % define \url y los enlaces del índice/citas; sin bordes de color
+\usepackage{etoolbox} % para que el título de la bibliografía use el estilo de \seccioEAC
 
 \definecolor{iocgray}{gray}{0.85}     % gris caja de título / barras de sección
 \definecolor{iocbarragris}{gray}{0.80}
@@ -141,6 +142,26 @@
   \ifiocindex\addcontentsline{toc}{section}{#1}\fi
   \vspace{0.3cm}
 }
+
+% Subtítulo sin numerar (p.ej. dentro de una sección). Mismo criterio
+% que \seccioEAC: sin número, para no perder la coherencia en el
+% índice frente a las barras grises (que tampoco numeran). Se añade
+% al índice con sangría de subsección si el índice está activado.
+\newcommand{\subseccioEAC}[1]{%
+	\par\vspace{0.25cm}
+	\noindent\textbf{#1}%
+	\ifiocindex\addcontentsline{toc}{subsection}{#1}\fi
+	\par\vspace{0.15cm}
+}
+
+% Hace que el título de la bibliografía (\refname) generado por el
+% entorno thebibliography use la misma barra gris que \seccioEAC, en
+% vez del \section* por defecto, para que no rompa el estilo visual.
+\makeatletter
+\patchcmd{\thebibliography}{\section*{\refname}}{\seccioEAC{\refname}}{}{%
+	\PackageWarningNoLine{ioc-eac-template}{No se pudo aplicar el estilo de \string\seccioEAC\space al título de la bibliografía}%
+}
+\makeatother
 
 % ============================================================
 %  DOCUMENTO
