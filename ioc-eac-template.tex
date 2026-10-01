@@ -5,9 +5,11 @@
 %  Edita el bloque "DATOS DEL DOCUMENTO" y los interruptores de
 %  abajo, y luego el contenido a partir de \begin{document}.
 % ============================================================
-
+\usepackage[catalan]{babel}
 \usepackage[a4paper,left=2cm,right=2cm,top=2.2cm,bottom=3.5cm,headheight=28pt,footskip=30pt]{geometry}
 \usepackage[utf8]{inputenc}
+\usepackage{graphicx} 
+\usepackage{float}
 \usepackage{xcolor}
 \usepackage{tabularx}
 \usepackage{multirow}
@@ -18,6 +20,22 @@
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref} % define \url y los enlaces del índice/citas; sin bordes de color
 \usepackage{etoolbox} % para que el título de la bibliografía use el estilo de \seccioEAC
+\usepackage{listings}
+
+%Configuració de codi de consola:
+\lstdefinestyle{consola}{
+	basicstyle=\ttfamily\small\color{white},
+	backgroundcolor=\color{black!85},
+	frame=single,
+	rulecolor=\color{black!85},
+	breaklines=true,
+	columns=fullflexible,
+	keepspaces=true,
+	showstringspaces=false,
+	xleftmargin=5pt, xrightmargin=5pt,
+	aboveskip=10pt, belowskip=10pt,
+	literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1
+}
 
 \definecolor{iocgray}{gray}{0.85}     % gris caja de título / barras de sección
 \definecolor{iocbarragris}{gray}{0.80}
@@ -139,7 +157,7 @@
       \textbf{#1}
     \end{minipage}%
   }
-  \ifiocindex\addcontentsline{toc}{section}{#1}\fi
+  \ifiocindex\phantomsection\addcontentsline{toc}{section}{#1}\fi
   \vspace{0.3cm}
 }
 
@@ -150,7 +168,7 @@
 \newcommand{\subseccioEAC}[1]{%
 	\par\vspace{0.25cm}
 	\noindent\textbf{#1}%
-	\ifiocindex\addcontentsline{toc}{subsection}{#1}\fi
+	\ifiocindex\phantomsection\addcontentsline{toc}{subsection}{#1}\fi
 	\par\vspace{0.15cm}
 }
 
